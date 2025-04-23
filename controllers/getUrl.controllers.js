@@ -1,6 +1,6 @@
 import URL from "../models/url.models.js";
 
-export default async function getURLByShortId(req, res) {
+async function getURLByShortId(req, res) {
   const shortId = req.params.shortId;
 
   try {
@@ -26,3 +26,14 @@ export default async function getURLByShortId(req, res) {
     return res.status(500).json({ error: "Internal server error" });
   }
 }
+
+async function getAnalytics(req, res) {
+  const shortId = req.params.shortId;
+  const result = await URL.findOne({ shortId });
+  return res.json({
+    totalClicks: result.visitHistory.length,
+    analytics: result.visitHistory,
+  });
+}
+
+export { getURLByShortId, getAnalytics };
